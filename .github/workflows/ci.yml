@@ -6,14 +6,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.11'      # pyspark 3.5.1 supports Python <= 3.12
           cache: 'pip'
 
-      - uses: actions/setup-java@v4   # PySpark needs a JVM
+      - uses: actions/setup-java@v5   # PySpark needs a JVM
         with:
           distribution: temurin
           java-version: '17'
