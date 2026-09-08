@@ -89,25 +89,31 @@ cross the two fact grains). Report: [`BI/BI report.pbix`](BI/BI%20report.pbix) �
 |:--:|:--:|
 | <img src="screenshots/BI%20report_Page_1.png" width="440"> | <img src="screenshots/BI%20report_Page_2.png" width="440"> |
 
-## Run it
+## Setup & run
 
-Requires Docker and the Olist CSVs placed in `data/raw/olist/`.
+**Prerequisites:** Docker, and the [Olist CSVs](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce) extracted into `data/raw/olist/`.
 
 ```bash
+# 1. Configure
 cp .env.example .env
-cp .env.airflow.example .env.airflow          # then set a real FERNET_KEY (command is in the file)
+cp .env.airflow.example .env.airflow      # set FERNET_KEY (generator command is in the file)
 
-docker compose --env-file .env.airflow build  # builds the custom Airflow image (~3 min, once)
+# 2. Build the custom Airflow image (~3 min, first run only) and start the stack
+docker compose --env-file .env.airflow build
 docker compose --env-file .env.airflow up -d
 ```
 
-- **Airflow UI** — http://localhost:8080 (`airflow` / `airflow`). Unpause **`retail_pipeline`** and trigger it.
-- **Warehouse** — `localhost:55432`, database `retail_dw`, user `retail_user`.
-- `sql/ddl/schema.sql` is applied automatically on first start.
+| Service | Endpoint | Credentials |
+|---|---|---|
+| Airflow UI | http://localhost:8080 | `airflow` / `airflow` |
+| Warehouse (`retail_dw`) | `localhost:55432` | `retail_user` / *(from `.env.airflow`)* |
 
-Run a single step outside Airflow (needs a local venv + JDK 17):
+`sql/ddl/schema.sql` is applied on first start. In the Airflow UI, unpause **`retail_pipeline`** and trigger a run (~1.5 min end to end).
+
+Run a single stage without Airflow (needs a Python venv + JDK 17):
 
 ```bash
+pip install -r requirements.txt
 python -m src.ingestion.ingest_orders
 python -m src.transforms.clean_sales
 python -m src.transforms.load_gold
