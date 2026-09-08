@@ -1,0 +1,25 @@
+name: Data Pipeline CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'      # pyspark 3.5.1 supports Python <= 3.12
+          cache: 'pip'
+
+      - uses: actions/setup-java@v4   # PySpark needs a JVM
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - run: pip install -r requirements.txt
+
+      # Unit tests only. test_data_quality.py reads data/, which is
+      # gitignored and absent on a fresh checkout.
+      - run: pytest tests/test_transforms.py -v

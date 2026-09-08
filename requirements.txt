@@ -1,0 +1,9 @@
+pyspark==3.5.1
+pandas
+pyarrow
+python-dotenv
+sqlalchemy
+psycopg2-binary
+pytest
+requests
+ipykernel
