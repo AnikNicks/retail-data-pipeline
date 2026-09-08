@@ -14,7 +14,7 @@ single Airflow DAG in Docker.
 ![PySpark](https://img.shields.io/badge/PySpark-local-E25A1C)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-336791)
 ![Docker](https://img.shields.io/badge/Docker%20Compose-stack-2496ED)
-[CI](https://github.com/OWNER/retail-data-pipeline/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/OWNER/retail-data-pipeline/actions/workflows/ci.yml/badge.svg)
 
 ---
 
